@@ -5,6 +5,7 @@ let router = new koaRouter()
 router.get('/', async(ctx) => {
     ctx.body = "首页"
 })
+// 注册
 router.post("/register", async(ctx) => {
     console.log(ctx.request.body)
     ctx.body= ctx.request.body
@@ -26,6 +27,7 @@ router.post("/register", async(ctx) => {
     })
 })
 
+// 验证用户唯一性
 router.post('/validate', async(ctx) => {
     console.log(ctx.request.body)
     let User = mongoose.model('User')
