@@ -1,7 +1,8 @@
 const mongoose = require("mongoose")
 const Schema = mongoose.Schema
+const bcrypt = require('bcrypt') //密码 加盐加密
 let ObjectId = Schema.Types.ObjectId
-
+let SALT_WORK_FACTOR = 10
 // 创建用户schema模型 
 const userSchema = new Schema({
     userId:ObjectId,
@@ -9,6 +10,26 @@ const userSchema = new Schema({
     password:{type: String},
     createAt:{type:Date, default: new Date()},
     lastLoginAt:{type:Date, default: new Date()}
+},{
+    collection:'user' // 指定collection 名字
+})
+
+ //每次存储数据时都要执行
+userSchema.pre("save",function (next){ // 注意 不能使用箭头函数 ， 会改变this 指向
+    console.log(this)
+    bcrypt.genSalt(SALT_WORK_FACTOR, (err,salt) =>{ // salt :提供生成的盐的回调的第二个参数。
+        if(err){
+            return next(err)
+        }
+        bcrypt.hash(this.password, salt , (err, hash) => { // 加密 并且 与 salt 拼接
+            if(err){
+                return next(err)
+            }else{
+                this.password = hash
+                next()
+            }
+        })
+    })
 })
 // 发布模型 必须首字母大写
 mongoose.model('User', userSchema)

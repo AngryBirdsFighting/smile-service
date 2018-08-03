@@ -3,10 +3,13 @@ const db = 'mongodb://localhost/smile-db'
 const glob = require('glob') //通配符
 const {resolve} = require('path') //路径
 
+
+
 // 使用通配符 和 resolve 引入所有的SCHEMA
 exports.initSchema = () => {
     glob.sync(resolve(__dirname, './schema', '**/*.js')).forEach(require)
 }
+// 
 exports.connect = () => {
     // 连接数据库
     mongoose.connect(db)
