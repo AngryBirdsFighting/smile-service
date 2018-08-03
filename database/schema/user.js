@@ -31,5 +31,19 @@ userSchema.pre("save",function (next){ // 注意 不能使用箭头函数 ， �
         })
     })
 })
+
+//密码验证
+userSchema.methods = {
+    //密码比对的方法
+    comparePassword:(_password,password)=>{
+        return new Promise((resolve,reject)=>{
+            bcrypt.compare(_password,password,(err,isMatch)=>{
+                if(!err) resolve(isMatch)
+                else reject(err)
+            })
+        })
+    }
+}
+ 
 // 发布模型 必须首字母大写
 mongoose.model('User', userSchema)

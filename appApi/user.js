@@ -43,7 +43,39 @@ router.post('/validate', async(ctx) => {
             message: "OK"
         }
     }
-
+})
+//login
+router.post('/login', async(ctx) => {
+    let data = ctx.request.body
+    let userName = data.userName
+    let password = data.password
+    let User = mongoose.model('User')
+    await  User.findOne({'userName': userName})
+    .then(async res => {
+        if(res){
+            let newUser = new User()  //因为是实例方法，所以要new出对象，才能调用
+            await newUser.comparePassword(password, res.password)
+            .then(isMatch => {
+                //返回比对结果
+                ctx.body={ success:1, message:"登录成功"} 
+            })
+            .catch(err => {
+                console.log(err)
+                ctx.body={ success:null, message:err} 
+            })
+        }else{
+            ctx.body = {
+                success: null,
+                message: '用户不存在'
+            }
+        }
+    })
+    .catch(err => {
+        ctx.body = {
+            success: null,
+            message: err
+        }
+    })
 })
 
 module.exports = router
