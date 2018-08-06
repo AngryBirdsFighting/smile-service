@@ -40,7 +40,7 @@ router.get('/insertAllCategorySub',async(ctx)=>{
     })
     ctx.body="开始导入数据"
 })
- 
+ // 
 router.get('/insertAllCategory',async(ctx)=>{
     fs.readFile('./data_json/category.json','utf8',(err,data)=>{
         data=JSON.parse(data)
@@ -60,6 +60,81 @@ router.get('/insertAllCategory',async(ctx)=>{
         
     })
     ctx.body="开始导入数据"
- 
+})
+// 获取商品详细
+router.post("/goodsInfo", async (ctx) => {
+    try{
+        let goodsId = ctx.request.body.goodsId
+        let newGoods = mongoose.model('Goods')
+        let res = await newGoods.findOne({'ID': goodsId})
+        if(res){
+            ctx.body = {
+                success:1,
+                data:res
+            }
+        }else{
+            ctx.body = {
+                success:null,
+                message:"数据不存在"
+            }
+        }
+    }catch(err){
+        ctx.body = {
+            success:null,
+            message:err
+        }
+    } 
+})
+// 获取商品大类
+router.post("/getCategoryList", async(ctx) => {
+    try{
+        let newCategory = mongoose.model("Category")
+        let res = await newCategory.find()
+        ctx.body = {
+            success:1,
+            data:res
+        }
+    }catch(err){
+        ctx.body = {
+            success:null,
+            message:err
+        }
+    }  
+})
+
+// 获取商品小类
+router.post("/getCategorySubList", async(ctx) =>{
+    try {
+        let categoryId = ctx.request.body.categoryId
+        let newCategorySub = mongoose.model('CategorySub')
+        let res = await newCategorySub.find({MALL_CATEGORY_ID:categoryId})
+        ctx.body = {
+            success:1,
+            data:res
+        }
+    } catch (error) {
+        ctx.body = {
+            success:null,
+            message:error
+        }
+    }
+})
+
+// 根据商品小类 获取商品列表
+router.post("/getGoodsListByCategorySubId", async(ctx) =>{
+    try {
+        let categorySubId = ctx.request.body.categoryId
+        let newGoods = mongoose.model('Godds')
+        let res = await newGoods.find({SUB_ID:categorySubId})
+        ctx.body = {
+            success:1,
+            data:res
+        }
+    } catch (error) {
+        ctx.body = {
+            success:null,
+            message:error
+        }
+    }
 })
 module.exports=router;
