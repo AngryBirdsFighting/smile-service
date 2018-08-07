@@ -123,9 +123,12 @@ router.post("/getCategorySubList", async(ctx) =>{
 // 根据商品小类 获取商品列表
 router.post("/getGoodsListByCategorySubId", async(ctx) =>{
     try {
-        let categorySubId = ctx.request.body.categoryId
-        let newGoods = mongoose.model('Godds')
-        let res = await newGoods.find({SUB_ID:categorySubId})
+        let categorySubId = ctx.request.body.categorySubId
+        let page = ctx.request.body.page
+        let num = 15 //每页显示数量
+        let start = (page-1)*num
+        let newGoods = mongoose.model('Goods')
+        let res = await newGoods.find({SUB_ID:categorySubId}).skip(start).limit(num)
         ctx.body = {
             success:1,
             data:res
