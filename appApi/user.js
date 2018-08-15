@@ -56,11 +56,14 @@ router.post('/login', async(ctx) => {
             let newUser = new User()  //因为是实例方法，所以要new出对象，才能调用
             await newUser.comparePassword(password, res.password)
             .then(isMatch => {
+                console.log("验证结果是" + isMatch)
                 //返回比对结果
+                if(isMatch)
                 ctx.body={ success:1, message:"登录成功"} 
+                else
+                ctx.body={ success:null, message:"密码错误"} 
             })
             .catch(err => {
-                console.log(err)
                 ctx.body={ success:null, message:err} 
             })
         }else{
