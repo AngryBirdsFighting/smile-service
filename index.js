@@ -13,6 +13,7 @@ let router = new koaRouter()
 // 装载子路由
 router.use('/user', userRouter.routes(), userRouter.allowedMethods())
 router.use('/goods', goodsRouter.routes(), goodsRouter.allowedMethods())
+router.use('/address', goodsRouter.routes(), goodsRouter.allowedMethods())
 //加载路由中间件
 App.use(router.routes()).use(router.allowedMethods())
 

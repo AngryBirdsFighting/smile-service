@@ -8,6 +8,8 @@ const userSchema = new Schema({
     userId:ObjectId,
     userName: {unique:true, type: String},
     password:{type: String},
+    phone:{type:String, maxlength:13},    
+    nickname:{type:String, unique: true},
     createAt:{type:Date, default: new Date()},
     lastLoginAt:{type:Date, default: new Date()}
 },{
