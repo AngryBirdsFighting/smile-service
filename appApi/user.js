@@ -52,13 +52,14 @@ router.post('/login', async(ctx) => {
     await  User.findOne({'userName': userName})
     .then(async res => {
         if(res){
+            console.log(res)
             let newUser = new User()  //因为是实例方法，所以要new出对象，才能调用
             await newUser.comparePassword(password, res.password)
             .then(isMatch => {
                 console.log("验证结果是" + isMatch)
                 //返回比对结果
-                if(isMatch)
-                ctx.body={ success:1, message:"登录成功"} 
+                if(isMatch)             
+                ctx.body={ success:1, data:res} 
                 else
                 ctx.body={ success:null, message:"密码错误"} 
             })

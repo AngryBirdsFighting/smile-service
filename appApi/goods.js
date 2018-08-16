@@ -88,6 +88,7 @@ router.post("/goodsInfo", async (ctx) => {
 // 获取商品大类
 router.post("/getCategoryList", async(ctx) => {
     try{
+        console.log(ctx.request.body)
         let newCategory = mongoose.model("Category")
         let res = await newCategory.find()
         ctx.body = {

@@ -6,9 +6,13 @@ const userSchema = new Schema({
     ID:ObjectId,
     userId:{type: String},
     path: {type: String},
-    default:{type: boolean},
+    areaCode:{type: String},
+    province:{type: String},
+    county:{type: String},
+    city:{type: String},
+    default:{type: Boolean},
     contacts:{type: String},
-    phone:{type: String, maxlength:13},
+    tel:{type: String, maxlength:13},
 },{
     collection:'address' // 指定collection 名字
 })

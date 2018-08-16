@@ -5,6 +5,7 @@ const mongoose =  require('mongoose')
 const koaRouter = require('koa-router')
 const userRouter = require('./appApi/user.js')
 const goodsRouter = require('./appApi/goods.js')
+const addressRouter = require('./appApi/address.js')
 const bodyParser = require("koa-bodyparser") // 将post请求转换到 ctx.request.body里
 const cors = require('koa2-cors') // 后台解决开发跨域
 
@@ -13,7 +14,7 @@ let router = new koaRouter()
 // 装载子路由
 router.use('/user', userRouter.routes(), userRouter.allowedMethods())
 router.use('/goods', goodsRouter.routes(), goodsRouter.allowedMethods())
-router.use('/address', goodsRouter.routes(), goodsRouter.allowedMethods())
+router.use('/address', addressRouter.routes(), addressRouter.allowedMethods())
 //加载路由中间件
 App.use(router.routes()).use(router.allowedMethods())
 

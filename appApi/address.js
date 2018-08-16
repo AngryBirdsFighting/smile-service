@@ -44,6 +44,26 @@ router.post("/edit", async(ctx) => {
         }
     })
 })
+// 获取地址
+router.post("/getList", async(ctx) => {
+    console.log(ctx.request.body)
+    let data = ctx.request.body
+    // 获取用户MODEL
+    let Address = mongoose.model('Address')
+    //把从前端接收的POST数据封装成一个新的user对象
+    // 将newUser 存入数据库， 存入失败就返回错误
+    await Address.find({userId:data.ID}).then((res) => {
+        ctx.body = {
+            success: 1,
+            data: res
+        }
+    }).catch(err => {
+        ctx.body = {
+            success: null,
+            message: err
+        }
+    })
+})
 // 删除地址
 router.post('/remove', async(ctx) => {
     let data = ctx.request.body

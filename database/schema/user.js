@@ -5,11 +5,10 @@ let ObjectId = Schema.Types.ObjectId
 let SALT_WORK_FACTOR = 10
 // 创建用户schema模型 
 const userSchema = new Schema({
-    userId:ObjectId,
     userName: {unique:true, type: String},
     password:{type: String},
-    phone:{type:String, maxlength:13},    
-    nickname:{type:String, unique: true},
+    phone:{type:String, maxlength:13,default:""},    
+    nickname:{type:String, unique: true,default:""},
     createAt:{type:Date, default: new Date()},
     lastLoginAt:{type:Date, default: new Date()}
 },{
