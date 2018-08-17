@@ -8,7 +8,7 @@ const userSchema = new Schema({
     userName: {unique:true, type: String},
     password:{type: String},
     phone:{type:String, maxlength:13,default:""},    
-    nickname:{type:String, unique: true,default:""},
+    nickname:{type:String,default:""},
     createAt:{type:Date, default: new Date()},
     lastLoginAt:{type:Date, default: new Date()}
 },{
@@ -17,7 +17,6 @@ const userSchema = new Schema({
 
  //每次存储数据时都要执行
 userSchema.pre("save",function (next){ // 注意 不能使用箭头函数 ， 会改变this 指向
-    console.log(this)
     bcrypt.genSalt(SALT_WORK_FACTOR, (err,salt) =>{ // salt :提供生成的盐的回调的第二个参数。
         if(err){
             return next(err)

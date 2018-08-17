@@ -5,13 +5,13 @@ let ObjectId = Schema.Types.ObjectId
 const userSchema = new Schema({
     ID:ObjectId,
     userId:{type: String},
-    path: {type: String},
-    areaCode:{type: String},
+    address_detail: {type: String},
+    area_code:{type: String},
     province:{type: String},
     county:{type: String},
     city:{type: String},
-    default:{type: Boolean},
-    contacts:{type: String},
+    is_default:{type: Boolean},
+    name:{type: String},
     tel:{type: String, maxlength:13},
 },{
     collection:'address' // 指定collection 名字

@@ -29,18 +29,18 @@ router.post("/edit", async(ctx) => {
     let data = ctx.request.body
     // 获取用户MODEL
     let Address = mongoose.model('Address')
-    //把从前端接收的POST数据封装成一个新的user对象
-    let newAddress = new Address(ctx.request.body)
     // 将newUser 存入数据库， 存入失败就返回错误
-    await newAddress.update({ID:data.ID}, data, {multi:false}).then(() => {
-        ctx.body = {
-            success: 1,
-            message: '修改成功'
-        }
-    }).catch(err => {
-        ctx.body = {
-            success: null,
-            message: err
+    await Address.findByIdAndUpdate({_id:data._id}, data, {multi:false}, function(err,row){
+        if(err){
+            ctx.body = {
+                success: null,
+                message: err
+            }
+        }else{
+            ctx.body = {
+                success: 1,
+                message: '修改成功'
+            }
         }
     })
 })
@@ -67,9 +67,8 @@ router.post("/getList", async(ctx) => {
 // 删除地址
 router.post('/remove', async(ctx) => {
     let data = ctx.request.body
-    let id = data.id
     let Address = mongoose.model('Address')
-    await  Address.remove({'userName': userName})
+    await  Address.remove({'_id': data._id})
     .then(async res => {
         if(res){
             ctx.body={ success:1, message:"删除成功"} 
