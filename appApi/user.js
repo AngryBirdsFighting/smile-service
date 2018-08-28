@@ -1,10 +1,15 @@
 const koaRouter = require('koa-router')
 const mongoose = require('mongoose')
+const jwt = require('jsonwebtoken')
 let router = new koaRouter()    
 
-router.get('/', async(ctx) => {
-    ctx.body = "首页"
-})
+// 加密密码
+const secretKey = '123456'
+// 过期时间
+const expiresIn = '2h'
+
+
+
 // 注册
 router.post("/register", async(ctx) => {
      console.log(ctx.request.body)
@@ -45,10 +50,14 @@ router.post('/validate', async(ctx) => {
 })
 //login
 router.post('/login', async(ctx) => {
-    console.log("1111111111111111111111")
+    console.log(555555555555555555)
     let data = ctx.request.body
     let userName = data.userName
     let password = data.password
+    let userSign = {
+        name: userName,
+        password: password
+    }
     let User = mongoose.model('User')
     await  User.findOne({'userName': userName})
     .then(async res => {
@@ -57,9 +66,16 @@ router.post('/login', async(ctx) => {
             await newUser.comparePassword(password, res.password)
             .then(isMatch => {
                 //返回比对结果
-                if(isMatch)             
-                ctx.body={ success:1, data:res} 
-                else
+                if(isMatch)  {
+                console.log(res)
+                    ctx.body = {
+                        success:1,
+                        data: {
+                            user:res,
+                            token: jwt.sign(userSign, secretKey, {expiresIn})  
+                        }      
+                    }                
+                } else
                 ctx.body={ success:null, message:"密码错误"} 
             })
             .catch(err => {
