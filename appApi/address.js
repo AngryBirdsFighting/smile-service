@@ -44,7 +44,6 @@ router.post("/edit", async(ctx) => {
 })
 // 获取地址
 router.post("/getList", async(ctx) => {
-    if(ctx.user){
         let data = ctx.request.body
         // 获取用户MODEL
         let Address = mongoose.model('Address')
@@ -61,13 +60,6 @@ router.post("/getList", async(ctx) => {
                 message: err
             }
         })
-    }else{
-        ctx.body = {
-            success: null,
-            message: "请登录"
-        }
-    }
-    
 })
 // 删除地址
 router.post('/remove', async(ctx) => {

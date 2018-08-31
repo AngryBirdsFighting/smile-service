@@ -50,7 +50,6 @@ router.post('/validate', async(ctx) => {
 })
 //login
 router.post('/login', async(ctx) => {
-    console.log(555555555555555555)
     let data = ctx.request.body
     let userName = data.userName
     let password = data.password
@@ -72,7 +71,7 @@ router.post('/login', async(ctx) => {
                         success:1,
                         data: {
                             user:res,
-                            token: jwt.sign(userSign, secretKey, {expiresIn})  
+                            // token: jwt.sign(userSign, secretKey, {expiresIn})  
                         }      
                     }                
                 } else

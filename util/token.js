@@ -8,6 +8,7 @@ const verify = util.promisify(jwt.verify);
  */
 module.exports = function () {
   return async function (ctx, next) {
+    
     try {
       // 获取jwt
       const token = ctx.header.authorization; 
