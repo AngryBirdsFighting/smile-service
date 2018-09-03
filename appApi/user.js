@@ -1,15 +1,13 @@
 const koaRouter = require('koa-router')
 const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
+const config = require("../config/config.js")
 let router = new koaRouter()    
 
-// 加密密码
-const secretKey = '123456'
-// 过期时间
-const expiresIn = '2h'
-
-
-
+// // 加密密码
+// const secretKey = '123456'
+// // 过期时间
+// const expiresIn = 300000
 // 注册
 router.post("/register", async(ctx) => {
      console.log(ctx.request.body)
@@ -67,11 +65,12 @@ router.post('/login', async(ctx) => {
                 //返回比对结果
                 if(isMatch)  {
                 console.log(res)
+                let sign = jwt.sign(userSign, config.tokenSecret, {expiresIn: config.time}) 
                     ctx.body = {
                         success:1,
                         data: {
                             user:res,
-                            // token: jwt.sign(userSign, secretKey, {expiresIn})  
+                            token: sign  
                         }      
                     }                
                 } else

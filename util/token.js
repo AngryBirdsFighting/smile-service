@@ -2,6 +2,7 @@
 const jwt = require('jsonwebtoken');
 const util = require('util');
 const verify = util.promisify(jwt.verify);
+const config = require("../config/config.js")
 
 /**
  * 判断token是否可用
@@ -15,7 +16,8 @@ module.exports = function () {
       if (token) {
         try {
           // 解密payload，获取用户名和ID
-          let payload = await verify(token, "123456");
+          let payload = await verify(token.split(' ')[1], config.tokenSecret);
+          // let payload = await verify(token, "123456");
           ctx.user = {
             name: payload.name,
             password: payload.password
@@ -26,6 +28,7 @@ module.exports = function () {
       }
       await next();
     } catch (err) {
+      console.log(err)
       if (err.status === 401) {
         ctx.status = 401;
         ctx.body = {
